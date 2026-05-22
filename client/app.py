@@ -1,4 +1,4 @@
-﻿from client.scenes.login_scene import LoginScene
+﻿from scenes.login_scene import LoginScene
 
 
 class App:

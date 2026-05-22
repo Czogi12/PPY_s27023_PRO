@@ -1,6 +1,6 @@
 ﻿import pygame
 
-from client.app import App
+from app import App
 
 
 def main():
