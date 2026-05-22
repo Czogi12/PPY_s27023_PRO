@@ -2,6 +2,7 @@
 
 app = FastAPI()
 
+print("Running server")
 
 @app.get("/")
 def read_root():

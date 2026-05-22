@@ -1,8 +1,8 @@
 ﻿import pygame
 import pygame_gui
 
-from client.layouts.column_layout import ColumnLayout
-from client.scenes.scene import Scene
+from ..layouts.column_layout import ColumnLayout
+from .scene import Scene
 
 class LoginScene(Scene):
     def __init__(self, app, screen):
