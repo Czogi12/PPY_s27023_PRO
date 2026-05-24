@@ -1,14 +1,18 @@
-﻿import pygame
+﻿import argparse
+import pygame
 
 from .app import App
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--server", default="http://localhost:8000", help="Server URL")
+    args = parser.parse_args()
 
-def main():
     pygame.init()
 
     screen = pygame.display.set_mode((800, 600))
     clock = pygame.time.Clock()
-    app = App(screen)
+    app = App(screen, server_url=args.server)
 
     pygame.display.set_caption("Game!")
 

@@ -1,20 +1,22 @@
-﻿import socketio
+import socketio
 import uvicorn
 from fastapi import FastAPI
-from .routers.user_router import router as user_router
+from server.routers.user_router import router as user_router
 
-fastapi_app = FastAPI()
-sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
+if __name__ == "__main__":
 
-fastapi_app.include_router(user_router)
+    fastapi_app = FastAPI()
+    sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
 
-@sio.event
-async def connect(sid, environ):
-    print("client connected", sid)
+    fastapi_app.include_router(user_router)
 
-@sio.event
-async def message(sid, data):
-    await sio.emit("reply", {"echo": data}, to=sid)
+    @sio.event
+    async def connect(sid, environ):
+        print("client connected", sid)
 
-app = socketio.ASGIApp(sio, other_asgi_app=fastapi_app)
-uvicorn.run(app, host="127.0.0.1", port=8000)
+    @sio.event
+    async def message(sid, data):
+        await sio.emit("reply", {"echo": data}, to=sid)
+
+    app = socketio.ASGIApp(sio, other_asgi_app=fastapi_app)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
