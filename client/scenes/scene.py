@@ -1,9 +1,13 @@
-﻿from abc import ABC, abstractmethod
+﻿from __future__ import annotations
+from abc import ABC, abstractmethod
+from typing import TYPE_CHECKING
 import pygame
 
+if TYPE_CHECKING:
+    from client.app import App
 class Scene(ABC):
     def __init__(self, app):
-        self.app = app
+        self.app: App = app
 
     @abstractmethod
     def handle_event(self, event: pygame.event.Event) -> None:

@@ -17,7 +17,7 @@ class LoginScene(Scene):
             height=height,
         )
 
-        self.username = pygame_gui.elements.UITextEntryLine(
+        self.login = pygame_gui.elements.UITextEntryLine(
             relative_rect=col.next(), manager=self.ui, placeholder_text="Username"
         )
         self.password = pygame_gui.elements.UITextEntryLine(
@@ -47,14 +47,17 @@ class LoginScene(Scene):
         self.ui.draw_ui(screen)
 
     def __login(self) -> None:
-        username = self.username.get_text()
+        login = self.login.get_text()
         password = self.password.get_text()
-        # TODO: POST to /login, then app.change_scene(LobbyBrowserScene(...))
-        print(f"login: {username!r}")
-        print(username)
+        if self.app.login(login, password):
+            pass
+            #TODO: proceed
+        else:
+            pass
+            #TODO: error
 
     def __register(self) -> None:
-        username = self.username.get_text()
+        login = self.login.get_text()
         password = self.password.get_text()
         # TODO: POST to /register
         print(f"register: {username!r}")
