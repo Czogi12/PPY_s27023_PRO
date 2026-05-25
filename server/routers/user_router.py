@@ -1,19 +1,39 @@
-﻿from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from dtos.user_dtos import UserLoginDto, UserRegisterDto
+from dtos.user_dtos import UserDto, UserLoginDto, UserRegisterDto
 from ..services.user_service import UserService
+
+_security = HTTPBearer()
+
+
 def create_user_router(service: UserService) -> APIRouter:
     router = APIRouter(prefix="/users")
 
     @router.post("/login")
-    def get_user(user: UserLoginDto):
+    def login(user: UserLoginDto):
         token = service.login(user.login, user.password)
         if token is None:
-            return {"message": "Login failed"}, 401
-        return token, 200
+            raise HTTPException(status_code=401, detail="Login failed")
+        return token
 
-    @router.post("/register")
-    def get_user(user: UserRegisterDto):
-        return service.register(user.login, user.password), 200
+    @router.post("/register", status_code=201)
+    def register(user: UserRegisterDto):
+        if not service.register(user.login, user.password):
+            raise HTTPException(status_code=409, detail="User already exists")
+        return {"ok": True}
+
+    @router.get("/me", response_model=UserDto)
+    def get_me(credentials: HTTPAuthorizationCredentials = Depends(_security)):
+        user = service.get_by_token(credentials.credentials)
+        if user is None:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        return UserDto(
+            id=user.id,
+            name=user.name,
+            login=user.login,
+            experience=user.experience,
+            gold=user.gold,
+        )
 
     return router

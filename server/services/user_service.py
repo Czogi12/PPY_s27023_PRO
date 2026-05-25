@@ -30,9 +30,11 @@ class UserService:
         token = os.urandom(32).hex()
         self.sessions[token] = user
         return token
+    def get_by_token(self, token):
+        return self.sessions.get(token)
+
     def register(self, login, password):
-        user = self.__get_user(login, password)
-        if user is not None:
+        if self.__get_user_by_login(login) is not None:
             return False
         id = len(self.users) + 1
         user = User(id, f"Użytkownik {id}", login, self.__hash_password(password), 0, 0)
@@ -69,6 +71,12 @@ class UserService:
         psw_hash = self.__hash_password(password)
         for user in self.users:
             if user.login == login and user.password_hash == psw_hash:
+                return user
+        return None
+
+    def __get_user_by_login(self, login):
+        for user in self.users:
+            if user.login == login:
                 return user
         return None
 

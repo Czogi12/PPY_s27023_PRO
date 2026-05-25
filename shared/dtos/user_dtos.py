@@ -8,3 +8,10 @@ class UserLoginDto(BaseModel):
 class UserRegisterDto(BaseModel):
     login: str
     password: str
+
+class UserDto(BaseModel):
+    id: int
+    name: str
+    login: str
+    experience: int
+    gold: int

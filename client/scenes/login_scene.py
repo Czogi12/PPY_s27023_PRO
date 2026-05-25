@@ -1,6 +1,7 @@
 ﻿import pygame
 import pygame_gui
 
+from .browser_scene import BrowserScene
 from ..layouts.column_layout import ColumnLayout
 from .scene import Scene
 
@@ -51,11 +52,10 @@ class LoginScene(Scene):
         login = self.login.get_text()
         password = self.password.get_text()
         if self.app.login(login, password):
-            pass
-            # TODO: proceed
+            self.app.change_scene(BrowserScene)
         else:
-            pass
             # TODO: error
+            pass
 
     def __register(self) -> None:
         login = self.login.get_text()
