@@ -2,7 +2,10 @@ import argparse
 import socketio
 import uvicorn
 from fastapi import FastAPI
+from server.routers.lobby_router import create_lobby_router
 from server.routers.user_router import create_user_router
+from server.services.lobby_service import LobbyService
+from server.sockets.lobby_socket import register_lobby_socket
 from services.user_service import UserService
 
 if __name__ == "__main__":
@@ -15,16 +18,12 @@ if __name__ == "__main__":
     sio = socketio.AsyncServer(async_mode="asgi", cors_allowed_origins="*")
 
     user_service = UserService(args.salt, args.hash_key)
-    user_router = create_user_router(user_service)
-    fastapi_app.include_router(user_router)
+    lobby_service = LobbyService(sio)
 
-    @sio.event
-    async def connect(sid, environ):
-        print("client connected", sid)
+    fastapi_app.include_router(create_user_router(user_service))
+    fastapi_app.include_router(create_lobby_router(lobby_service, user_service))
 
-    @sio.event
-    async def message(sid, data):
-        await sio.emit("reply", {"echo": data}, to=sid)
+    register_lobby_socket(sio, lobby_service, user_service)
 
     app = socketio.ASGIApp(sio, other_asgi_app=fastapi_app)
     uvicorn.run(app, host="127.0.0.1", port=8000)

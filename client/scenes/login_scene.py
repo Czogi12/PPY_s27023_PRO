@@ -1,4 +1,4 @@
-﻿import pygame
+import pygame
 import pygame_gui
 
 from .browser_scene import BrowserScene
@@ -49,16 +49,40 @@ class LoginScene(Scene):
         self.ui.draw_ui(screen)
 
     def __login(self) -> None:
+        if not self._alive:
+            return
         login = self.login.get_text()
         password = self.password.get_text()
-        if self.app.login(login, password):
+        self.login_btn.disable()
+        self.register_btn.disable()
+        self.app.submit(self.app.login, login, password, on_done=self._on_login)
+
+    def _on_login(self, result) -> None:
+        if not self._alive:
+            return
+        token, _ = result
+        if token is not None:
+            self.app.token = token
             self.app.change_scene(BrowserScene)
-        else:
-            # TODO: error
-            pass
+            return
+        self.login_btn.enable()
+        self.register_btn.enable()
 
     def __register(self) -> None:
+        if not self._alive:
+            return
         login = self.login.get_text()
         password = self.password.get_text()
-        if self.app.register(login, password):
+        self.login_btn.disable()
+        self.register_btn.disable()
+        self.app.submit(self.app.register, login, password, on_done=self._on_register)
+
+    def _on_register(self, result) -> None:
+        if not self._alive:
+            return
+        ok, _ = result
+        if ok:
             self.__login()
+            return
+        self.login_btn.enable()
+        self.register_btn.enable()

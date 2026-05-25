@@ -11,7 +11,7 @@ _DEFAULT_DATA_FILE = os.path.normpath(os.path.join(os.path.dirname(__file__), ".
 
 class UserService:
     def __init__(self, salt, hash_key, data_file=_DEFAULT_DATA_FILE):
-        self.users: [User] = []
+        self.users: list[User] = list()
         self.sessions = {}
         self.salt = salt
         self.hash_key = hash_key

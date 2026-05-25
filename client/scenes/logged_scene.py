@@ -29,7 +29,16 @@ class LoggedScene(Scene):
         )
 
     def on_enter(self) -> None:
-        self.app.fetch_me()
+        if self.app.user is None and self.app.token is not None:
+            self.app.submit(self.app.fetch_me, on_done=self._on_fetched_me)
+
+    def _on_fetched_me(self, result) -> None:
+        if not self._alive:
+            return
+        from ..models.user import User
+        data, _ = result
+        if data is not None:
+            self.app.user = User(password_hash="", **data)
 
     def handle_event(self, event: pygame.event.Event) -> None:
         self.ui.process_events(event)
