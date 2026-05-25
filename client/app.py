@@ -10,11 +10,19 @@ class App:
         self.server_url = server_url
         self.scene = LoginScene(self, screen)
         self.user: User | None = None
+        self.token: str | None = None
         pass
     def login(self, login, password) -> bool:
         resp = httpx.post(f"{self.server_url}/users/login", json={
         "login": login, "password": password
         })
-        print(resp.json())
-        return True
+        if resp.status_code == 200:
+            self.token = resp.json()
+            return True
+        return False
+    def register(self, login, password) -> bool:
+        resp = httpx.post(f"{self.server_url}/users/register", json={
+            "login": login, "password": password
+        })
+        return resp.json()
 

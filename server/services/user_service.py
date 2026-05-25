@@ -2,11 +2,13 @@
 import hashlib
 import os
 
+from models.user import User
+
 
 class UserService:
     def __init__(self, salt, hash_key):
         from models.user import User
-        self.users: {User} = {}
+        self.users: [User] = []
         self.sessions = {}
         self.salt = salt
         self.hash_key = hash_key
@@ -23,6 +25,14 @@ class UserService:
         token = os.urandom(32).hex()
         self.sessions[token] = user
         return token
+    def register(self, login, password):
+        user = self.__get_user(login, password)
+        if user is not None:
+            return False
+        id = len(self.users) + 1
+        user = User(id, f"Użytkownik {id}", login, self.hash_password(password), 0, 0)
+        self.users.append(user)
+        return True
 
     def __get_user(self, login, password):
         psw_hash = self.hash_password(password)

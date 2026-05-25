@@ -10,10 +10,10 @@ def create_user_router(service: UserService) -> APIRouter:
         token = service.login(user.login, user.password)
         if token is None:
             return {"message": "Login failed"}, 401
-        return {token: token}, 200
+        return token, 200
 
-    @router.post("/")
+    @router.post("/register")
     def get_user(user: UserRegisterDto):
-        return user
+        return service.register(user.login, user.password), 200
 
     return router

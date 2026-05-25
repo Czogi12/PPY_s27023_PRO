@@ -4,6 +4,7 @@ import pygame_gui
 from ..layouts.column_layout import ColumnLayout
 from .scene import Scene
 
+
 class LoginScene(Scene):
     def __init__(self, app, screen):
         super().__init__(app)
@@ -51,13 +52,13 @@ class LoginScene(Scene):
         password = self.password.get_text()
         if self.app.login(login, password):
             pass
-            #TODO: proceed
+            # TODO: proceed
         else:
             pass
-            #TODO: error
+            # TODO: error
 
     def __register(self) -> None:
         login = self.login.get_text()
         password = self.password.get_text()
-        # TODO: POST to /register
-        print(f"register: {username!r}")
+        if self.app.register(login, password):
+            self.__login()
