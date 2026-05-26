@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from dtos.lobby_dtos import LobbyCreateDto, LobbyDto, LobbySummaryDto
-from dtos.user_dtos import UserDto
-from models.lobby import Lobby
+from shared.dtos.lobby_dtos import LobbyCreateDto, LobbyDto, LobbySummaryDto
+from shared.dtos.user_dtos import UserDto
+from shared.models.lobby import Lobby
 from ..services.lobby_service import LobbyError, LobbyService
 from ..services.user_service import UserService
 

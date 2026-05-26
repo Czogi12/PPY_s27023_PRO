@@ -3,8 +3,8 @@ from typing import Optional
 
 import socketio
 
-from models.lobby import Lobby, MAX_USERS
-from models.user import User
+from shared.models.lobby import Lobby, MAX_USERS
+from shared.models.user import User
 
 
 def _room(lobby_id: int) -> str:

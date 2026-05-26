@@ -6,7 +6,7 @@ from server.routers.lobby_router import create_lobby_router
 from server.routers.user_router import create_user_router
 from server.services.lobby_service import LobbyService
 from server.sockets.lobby_socket import register_lobby_socket
-from services.user_service import UserService
+from server.services.user_service import UserService
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

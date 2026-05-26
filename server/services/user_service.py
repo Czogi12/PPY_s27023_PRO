@@ -3,7 +3,7 @@ import hashlib
 import json
 import os
 
-from models.user import User
+from shared.models.user import User
 
 
 _DEFAULT_DATA_FILE = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", "data", "users.json"))

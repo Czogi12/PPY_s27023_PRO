@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from dtos.user_dtos import UserDto, UserLoginDto, UserRegisterDto
+from shared.dtos.user_dtos import UserDto, UserLoginDto, UserRegisterDto
 from ..services.user_service import UserService
 
 _security = HTTPBearer()

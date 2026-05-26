@@ -1,4 +1,4 @@
-from models.user import User
+from shared.models.user import User
 
 
 MAX_USERS = 20
